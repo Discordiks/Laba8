@@ -16,12 +16,17 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.journeyapps.barcodescanner.CaptureActivity;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,21 +55,39 @@ public class MainActivity extends AppCompatActivity {
                             Manifest.permission.CAMERA
                     },100);
                 }
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                imageCL.launch(intent);
+                else{
+                    ScanOptions options = new ScanOptions();
+                    options.setPrompt("Скан кода");
+                    options.setBeepEnabled(true);
+                    options.setOrientationLocked(true);
+                    options.setCaptureActivity(CaptureAct.class);
+
+                    barLauncher.launch(options);
+                }
+                //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                //imageCL.launch(intent);
             }
         });
     }
-    ActivityResultLauncher<Intent> imageCL = registerForActivityResult(
-        new ActivityResultContracts.StartActivityForResult(),
-        new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                if (result.getResultCode() == MainActivity.RESULT_OK) { //здесь получим нашу фотографию
-                    Bitmap bitmap = (Bitmap) result.getData().getExtras().get("data"); //получаем изображение в виде бинарного кода
-                    imageView.setImageBitmap(bitmap);
-                }
-            }
+    ActivityResultLauncher<ScanOptions> barLauncher=registerForActivityResult(new ScanContract(), result -> {
+        if (result.getContents()!=null){
+            AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("Результат");
+            builder.setMessage(result.getContents());
+            builder.show();
         }
-    );
+    });
+
+    //ActivityResultLauncher<Intent> imageCL = registerForActivityResult(
+    //    new ActivityResultContracts.StartActivityForResult(),
+    //    new ActivityResultCallback<ActivityResult>() {
+    //        @Override
+    //        public void onActivityResult(ActivityResult result) {
+    //            if (result.getResultCode() == MainActivity.RESULT_OK) { //здесь получим нашу фотографию
+    //                Bitmap bitmap = (Bitmap) result.getData().getExtras().get("data"); //получаем изображение в виде бинарного кода
+    //                imageView.setImageBitmap(bitmap);
+    //            }
+    //        }
+    //    }
+    //);
 }
