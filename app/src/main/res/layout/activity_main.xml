@@ -10,11 +10,11 @@
     <TextView
         android:id="@+id/textView2"
         android:layout_width="0dp"
-        android:layout_height="158dp"
+        android:layout_height="199dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="150dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="124dp"
+        android:layout_marginBottom="83dp"
         android:gravity="center"
         android:text="Чтобы отсканировать QRcode, нажмите кнопку ниже"
         android:textSize="34sp"

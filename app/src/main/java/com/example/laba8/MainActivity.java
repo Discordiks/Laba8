@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         button=(Button) findViewById(R.id.btn);
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,19 +65,18 @@ public class MainActivity extends AppCompatActivity {
     }
     ActivityResultLauncher<ScanOptions> barLauncher=registerForActivityResult(new ScanContract(), result -> {
         if (result.getContents()!=null){
-            Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
-            intent.putExtra("name",result.getContents());
-            if (result.getContents()=="Дом"){
-                intent.putExtra("img",R.drawable.home_svg);
+            String name_code = result.getContents();
+            if (name_code.equals("Дом")){
+                Intent intent=new Intent(MainActivity.this,HomeActivity.class);
                 startActivity(intent);
             }
-            else if (result.getContents()=="Геншин"){
-                intent.putExtra("img",R.drawable.genshin_svg);
+            else if (name_code.equals("Геншин")){
+                Intent intent=new Intent(MainActivity.this,GenshinActivity.class);
                 startActivity(intent);
             }
-            else if (result.getContents().equals("Аркейн")){
-                Intent intent_arcane=new Intent(getApplicationContext(),ArcaneActivity.class);
-                startActivity(intent_arcane);
+            else if (name_code.equals("Аркейн")){
+                Intent intent=new Intent(MainActivity.this,ArcaneActivity.class);
+                startActivity(intent);
             }
             else {
                 AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);

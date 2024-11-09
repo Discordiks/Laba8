@@ -11,8 +11,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class HomeActivity extends AppCompatActivity {
-    private TextView textView;
-    private ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,11 +21,5 @@ public class HomeActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        textView = findViewById(R.id.textView);
-        imageView = findViewById(R.id.imageView);
-        String name = getIntent().getStringExtra("name");
-        int img = getIntent().getIntExtra("img",0);
-        textView.setText(name);
-        imageView.setImageResource(img);
     }
 }
