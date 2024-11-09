@@ -30,9 +30,7 @@ import com.journeyapps.barcodescanner.ScanOptions;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView imageView;
     private Button button;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        imageView=(ImageView) findViewById(R.id.imageView);
         button=(Button) findViewById(R.id.btn);
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -61,33 +58,34 @@ public class MainActivity extends AppCompatActivity {
                     options.setBeepEnabled(true);
                     options.setOrientationLocked(true);
                     options.setCaptureActivity(CaptureAct.class);
-
+                    //сканирование кода
                     barLauncher.launch(options);
                 }
-                //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //imageCL.launch(intent);
             }
         });
     }
     ActivityResultLauncher<ScanOptions> barLauncher=registerForActivityResult(new ScanContract(), result -> {
         if (result.getContents()!=null){
-            AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle("Результат");
-            builder.setMessage(result.getContents());
-            builder.show();
+            Intent intent=new Intent(getApplicationContext(),HomeActivity.class);
+            intent.putExtra("name",result.getContents());
+            if (result.getContents()=="Дом"){
+                intent.putExtra("img",R.drawable.home_svg);
+                startActivity(intent);
+            }
+            else if (result.getContents()=="Геншин"){
+                intent.putExtra("img",R.drawable.genshin_svg);
+                startActivity(intent);
+            }
+            else if (result.getContents().equals("Аркейн")){
+                Intent intent_arcane=new Intent(getApplicationContext(),ArcaneActivity.class);
+                startActivity(intent_arcane);
+            }
+            else {
+                AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Результат");
+                builder.setMessage(result.getContents());
+                builder.show();
+            }
         }
     });
-
-    //ActivityResultLauncher<Intent> imageCL = registerForActivityResult(
-    //    new ActivityResultContracts.StartActivityForResult(),
-    //    new ActivityResultCallback<ActivityResult>() {
-    //        @Override
-    //        public void onActivityResult(ActivityResult result) {
-    //            if (result.getResultCode() == MainActivity.RESULT_OK) { //здесь получим нашу фотографию
-    //                Bitmap bitmap = (Bitmap) result.getData().getExtras().get("data"); //получаем изображение в виде бинарного кода
-    //                imageView.setImageBitmap(bitmap);
-    //            }
-    //        }
-    //    }
-    //);
 }
