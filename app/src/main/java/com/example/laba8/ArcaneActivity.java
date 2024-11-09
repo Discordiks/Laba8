@@ -33,9 +33,5 @@ public class ArcaneActivity extends AppCompatActivity {
         MediaController mediaController = new MediaController(this);
         mediaController.setAnchorView(videoView);
         videoView.setMediaController(mediaController);
-        SpannableString text = new SpannableString("https://youtube.com/shorts/4Qym2bE3cUA?si=oIDWecnRPZ154p_k");
-        text.setSpan(new URLSpan("https://youtube.com/shorts/4Qym2bE3cUA?si=oIDWecnRPZ154p_k"), 19, 34, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        textView.setText(text);
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }
